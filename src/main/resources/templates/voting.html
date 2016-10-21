@@ -1,0 +1,52 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Hello World</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/snafoo/voting}">Vote</a></li>
+                <li><a href="#">Suggestions</a></li>
+                <li><a href="#">Shopping List</a></li>
+            </ul>
+        </nav>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Always Purchased</div>
+                    <ul class="list-group">
+                        <li th:each="snack : ${snacks}" th:text="${snack.meta.name}"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Suggested</div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Votes</th>
+                                <th>Last Purchased</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="snack : ${snacks}">
+                                <td th:text="${snack.meta.name}"></td>
+                                <td>
+                                    <i class="fa fa-thumbs-up voted" aria-hidden="true" th:if="${snack.voted}"></i>
+                                    <i class="fa fa-thumbs-up" aria-hidden="true" th:unless="${snack.voted}"></i>
+                                    <i th:text="${snack.votes}"></i>
+                                </td>
+                                <td th:text="${snack.meta.lastPurchaseDate}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
