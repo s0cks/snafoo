@@ -6,4 +6,5 @@ import org.springframework.data.repository.Repository;
 interface FoodRepository
 extends Repository<Food, Long> {
   public Food findByName(String name);
+  public Food save(Food f);
 }

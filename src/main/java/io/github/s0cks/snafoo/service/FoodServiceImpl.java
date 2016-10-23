@@ -17,6 +17,11 @@ implements FoodService{
 
   @Override
   public Food getFood(String name) {
-    return this.foods.findByName(name);
+    Food f = this.foods.findByName(name);
+    if(f == null){
+      f = new Food(name);
+      this.foods.save(f);
+    }
+    return f;
   }
 }
