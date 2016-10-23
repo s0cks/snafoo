@@ -1,13 +1,15 @@
 package io.github.s0cks.snafoo.data;
 
-public final class Snack{
-  public final SnackData meta;
-  public final int votes;
-  public final boolean voted;
+public abstract class Snack{
+  public final String id;
+  public final String name;
+  public final String purchaseLocations;
+  public final boolean optional;
 
-  public Snack(SnackData meta, int votes, boolean voted) {
-    this.meta = meta;
-    this.votes = votes;
-    this.voted = voted;
+  protected Snack(String id, String name, String purchaseLocations, boolean optional) {
+    this.id = id;
+    this.name = name;
+    this.purchaseLocations = purchaseLocations;
+    this.optional = optional;
   }
 }

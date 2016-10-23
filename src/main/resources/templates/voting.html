@@ -4,6 +4,14 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script>
+            var voteFor = function(name){
+                $.get("/vote/" + name, function(data, status){
+                    alert("Voting for: " + name);
+                });
+            };
+        </script>
     </head>
     <body>
         <nav class="navbar navbar-default">
@@ -18,7 +26,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Always Purchased</div>
                     <ul class="list-group">
-                        <li th:each="snack : ${snacks}" th:text="${snack.meta.name}"></li>
+                        <li th:each="snack : ${snacks}" th:text="${snack.name}"></li>
                     </ul>
                 </div>
             </div>
@@ -34,11 +42,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="snack : ${snacks}">
+                            <tr th:each="snack : ${suggestions}">
                                 <td th:text="${snack.meta.name}"></td>
                                 <td>
                                     <i class="fa fa-thumbs-up voted" aria-hidden="true" th:if="${snack.voted}"></i>
-                                    <i class="fa fa-thumbs-up" aria-hidden="true" th:unless="${snack.voted}"></i>
+                                    <i class="fa fa-thumbs-up" aria-hidden="true" th:unless="${snack.voted}" th:onclick="'voteFor(\'' + ${snack.meta.name} + '\');'"></i>
                                     <i th:text="${snack.votes}"></i>
                                 </td>
                                 <td th:text="${snack.meta.lastPurchaseDate}"></td>
