@@ -23,6 +23,14 @@ implements Serializable{
     this.count = 0;
   }
 
+  public boolean vote(Food f){
+    if(f.addVoter(this)){
+      this.count += 1;
+      return true;
+    }
+    return false;
+  }
+
   public int getCount(){
     return this.count;
   }

@@ -16,6 +16,16 @@ implements VotingService{
 
   @Override
   public Voter getVoter(long id) {
-    return this.votingRepo.findById(id);
+    Voter v = this.votingRepo.findById(id);
+    if(v == null) {
+      v = new Voter();
+      this.votingRepo.save(v);
+    }
+    return v;
+  }
+
+  @Override
+  public Voter save(Voter voter) {
+    return this.votingRepo.save(voter);
   }
 }

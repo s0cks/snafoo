@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Snafoo: Suggestions</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script>
+            var suggest = function(name, location){
+                $.ajax({
+                    "url": "/snafoo/suggest",
+                    "type": "POST",
+                    "data": JSON.stringify({
+                        "Name": name,
+                        "Location": location
+                    }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    "success": function(data){
+                        window.location.replace("@{/snafoo/voting}");
+                    }
+                });
+            };
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/snafoo/voting}">Vote</a></li>
+                <li><a th:href="@{/snafoo/suggestions}">Suggestions</a></li>
+                <li><a href="#">Shopping List</a></li>
+            </ul>
+        </nav>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Select</div>
+                    <div class="panel-body">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li th:each="snack : ${suggestions}" th:text="${snack.name}"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Suggest</div>
+                    <div class="panel-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="formSnackName">Snack Name</label>
+                                <input type="text" class="form-control" id="formSnackName" placeholder="Enter Snack Name..."/>
+                            </div>
+                            <div class="form-group">
+                                <label for="formSnackLocation">Snack Location</label>
+                                <input type="text" class="form-control" id="formSnackLocation" placeholder="Enter Snack Location..."/>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" onclick="suggest($('#formSnackName').val(), $('#formSnackLocation').val())">Suggest</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

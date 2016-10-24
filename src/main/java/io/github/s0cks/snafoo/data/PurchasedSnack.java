@@ -5,19 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public final class PurchasedSnack
 extends Snack{
-  public final String lastPurchaseDate;
-  public final int purchaseCount;
-
   @JsonCreator
-  private PurchasedSnack(
-      @JsonProperty("Id") String id,
-      @JsonProperty("Name") String name,
-      @JsonProperty("Optional") boolean optional,
-      @JsonProperty("PurchaseLocations") String purchaseLocations,
-      @JsonProperty("PurchaseCount") int purchaseCount,
-      @JsonProperty("LastPurchaseDate") String lastPurchaseDate){
-    super(id, name, purchaseLocations, optional);
-    this.lastPurchaseDate = lastPurchaseDate;
-    this.purchaseCount = purchaseCount;
+  private PurchasedSnack(@JsonProperty("Id") int id,
+                         @JsonProperty("Name") String name,
+                         @JsonProperty("Optional") boolean optional,
+                         @JsonProperty("PurchaseLocations") String locations,
+                         @JsonProperty("PurchaseCount") int count,
+                         @JsonProperty("LastPurchaseDate") String date){
+    super(id, name, locations, date, count, 0, optional);
   }
 }

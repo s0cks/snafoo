@@ -36,6 +36,12 @@ implements Serializable{
     this.voters = new HashSet<>();
   }
 
+  public boolean addVoter(Voter v){
+    if(this.voters.contains(v)) return false;
+    this.voters.add(v);
+    return true;
+  }
+
   public String getName(){
     return this.name;
   }

@@ -7,8 +7,14 @@
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <script>
             var voteFor = function(name){
-                $.get("/vote/" + name, function(data, status){
-                    alert("Voting for: " + name);
+                $.ajax({
+                    "url": "/snafoo/vote/" + name,
+                    "type": "GET",
+                    "success": function(data){
+                        if(data.code == 200){
+                            location.reload(true);
+                        }
+                    }
                 });
             };
         </script>
@@ -17,7 +23,7 @@
         <nav class="navbar navbar-default">
             <ul class="nav navbar-nav">
                 <li><a th:href="@{/snafoo/voting}">Vote</a></li>
-                <li><a href="#">Suggestions</a></li>
+                <li><a th:href="@{/snafoo/suggestions}">Suggestions</a></li>
                 <li><a href="#">Shopping List</a></li>
             </ul>
         </nav>
@@ -43,13 +49,12 @@
                         </thead>
                         <tbody>
                             <tr th:each="snack : ${suggestions}">
-                                <td th:text="${snack.meta.name}"></td>
+                                <td th:text="${snack.name}"></td>
                                 <td>
-                                    <i class="fa fa-thumbs-up voted" aria-hidden="true" th:if="${snack.voted}"></i>
-                                    <i class="fa fa-thumbs-up" aria-hidden="true" th:unless="${snack.voted}" th:onclick="'voteFor(\'' + ${snack.meta.name} + '\');'"></i>
+                                    <i class="fa fa-thumbs-up" style="cursor: pointer" aria-hidden="true" th:unless="${snack.voted}" th:onclick="'voteFor(\'' + ${snack.name} + '\');'"></i>
                                     <i th:text="${snack.votes}"></i>
                                 </td>
-                                <td th:text="${snack.meta.lastPurchaseDate}"></td>
+                                <td th:text="${snack.lastPurchaseDate}"></td>
                             </tr>
                         </tbody>
                     </table>
