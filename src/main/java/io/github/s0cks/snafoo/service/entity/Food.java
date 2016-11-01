@@ -1,11 +1,13 @@
 package io.github.s0cks.snafoo.service.entity;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +25,10 @@ implements Serializable{
   private String name;
 
   @ElementCollection
+  @CollectionTable(
+    name = "Voter",
+    joinColumns = @JoinColumn(name = "voter_id")
+  )
   private Set<Voter> voters;
 
   public Food(){}

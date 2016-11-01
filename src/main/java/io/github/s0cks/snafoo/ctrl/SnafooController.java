@@ -18,24 +18,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 public final class SnafooController{
+  private static final AtomicInteger voterId = new AtomicInteger(0x1);
+
   @Autowired private VotingService voting;
   @Autowired private FoodService food;
 
   @RequestMapping({ "/snafoo/suggestions" })
   public String getSuggestions(Model model){
-    model.addAttribute("suggestions", Snacks.getSuggestions());
+    model.addAttribute("suggestions", Snacks.getSuggestions(this.food, null));
     return "suggestions";
   }
 
   @RequestMapping({ "/", "/snafoo/voting" })
   public String getVoting(@CookieValue(value = "VoteId", defaultValue = "0") Integer voteId,
+                          HttpServletResponse resp,
                            Model model){
-    model.addAttribute("snacks", Snacks.getBaseSet());
-    model.addAttribute("suggestions", Snacks.getSuggestions());
+    if(voteId == 0x0){
+      Cookie c = new Cookie("VoteId", "" + voterId.getAndIncrement());
+      c.setMaxAge(((int) TimeUnit.DAYS.toSeconds(1)));
+      resp.addCookie(c);
+    }
+
+    Voter voter = this.voting.getVoter(voteId);
+    model.addAttribute("snacks", Snacks.getBaseSet(this.food, voter));
+    model.addAttribute("suggestions", Snacks.getSuggestions(this.food, voter));
     return "voting";
   }
 

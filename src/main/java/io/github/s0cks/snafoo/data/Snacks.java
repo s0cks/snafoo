@@ -1,6 +1,8 @@
 package io.github.s0cks.snafoo.data;
 
 import io.github.s0cks.snafoo.SnafooSnackService;
+import io.github.s0cks.snafoo.service.FoodService;
+import io.github.s0cks.snafoo.service.entity.Voter;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,15 +17,17 @@ public final class Snacks {
     snacks.addAll(Arrays.asList(SnafooSnackService.INSTANCE.getSnacks()));
   }
 
-  public static Set<Snack> getBaseSet() {
+  public static Set<SnackMeta> getBaseSet(FoodService foods, Voter voter) {
     return snacks.stream()
                  .filter((s) -> !s.optional)
+                 .map((s) -> s.meta(foods.getFood(s.name), voter))
                  .collect(Collectors.toSet());
   }
 
-  public static Set<Snack> getSuggestions() {
+  public static Set<SnackMeta> getSuggestions(FoodService foods, Voter voter) {
     return snacks.stream()
                  .filter((s) -> s.optional)
+                 .map((s) -> s.meta(foods.getFood(s.name), voter))
                  .collect(Collectors.toSet());
   }
 
@@ -33,7 +37,7 @@ public final class Snacks {
                  .findFirst();
   }
 
-  public static void add(Snack s){
+  public static void add(Snack s) {
     snacks.add(s);
   }
 }

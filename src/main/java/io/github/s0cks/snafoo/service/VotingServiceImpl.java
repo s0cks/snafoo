@@ -16,9 +16,9 @@ implements VotingService{
 
   @Override
   public Voter getVoter(long id) {
-    Voter v = this.votingRepo.findById(id);
+    Voter v = this.votingRepo.findByVoterId(id);
     if(v == null) {
-      v = new Voter();
+      v = new Voter(id);
       this.votingRepo.save(v);
     }
     return v;
@@ -26,6 +26,11 @@ implements VotingService{
 
   @Override
   public Voter save(Voter voter) {
-    return this.votingRepo.save(voter);
+    try{
+      if(voter == null) throw new IllegalStateException("Voter == null");
+      return this.votingRepo.save(voter);
+    } catch (Exception e){
+      throw new RuntimeException(e);
+    }
   }
 }

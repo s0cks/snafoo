@@ -12,15 +12,13 @@ public class Snack{
   public final String purchaseLocations;
   public final String lastPurchaseDate;
   public final boolean optional;
-  public int votes;
 
-  public Snack(int id, String name, String purchaseLocations, String lastPurchaseDate, int purchaseCount, int votes, boolean optional) {
+  public Snack(int id, String name, String purchaseLocations, String lastPurchaseDate, int purchaseCount, boolean optional) {
     this.id = id;
     this.name = name;
     this.purchaseLocations = purchaseLocations;
     this.lastPurchaseDate = lastPurchaseDate;
     this.purchaseCount = purchaseCount;
-    this.votes = votes;
     this.optional = optional;
   }
 
@@ -28,10 +26,14 @@ public class Snack{
     Food f = foods.getFood(this.name);
     if(voter.vote(f)){
       voting.save(voter);
-      this.votes = f.getNumOfVotes();
       return true;
     }
     return false;
+  }
+
+  public SnackMeta meta(Food food, Voter voter){
+    if(voter == null) return new SnackMeta(this.name, this.lastPurchaseDate, false, food.getNumOfVotes());
+    return new SnackMeta(this.name, this.lastPurchaseDate, food.isVotedOnBy(voter), food.getNumOfVotes());
   }
 
   @Override

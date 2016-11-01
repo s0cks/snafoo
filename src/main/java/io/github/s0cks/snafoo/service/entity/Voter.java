@@ -17,9 +17,15 @@ implements Serializable{
   private Long id;
 
   @Column(nullable = false)
+  private Long voterId;
+
+  @Column(nullable = false)
   private Integer count;
 
-  public Voter(){
+  public Voter(){}
+
+  public Voter(long id){
+    this.voterId = id;
     this.count = 0;
   }
 
@@ -33,16 +39,5 @@ implements Serializable{
 
   public int getCount(){
     return this.count;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return obj == this || obj instanceof Voter &&
-            (((Voter) obj).id).equals(this.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return this.id.hashCode();
   }
 }

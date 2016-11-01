@@ -12,6 +12,6 @@ extends Snack{
                          @JsonProperty("PurchaseLocations") String locations,
                          @JsonProperty("PurchaseCount") int count,
                          @JsonProperty("LastPurchaseDate") String date){
-    super(id, name, locations, date, count, 0, optional);
+    super(id, name, locations, date, count, optional);
   }
 }
