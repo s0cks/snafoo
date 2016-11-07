@@ -1,4 +1,4 @@
-package io.github.s0cks.snafoo.data;
+package io.github.s0cks.snafoo.model.rest;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,13 +9,16 @@ public final class Suggestion{
 
   @JsonCreator
   private Suggestion(@JsonProperty("Name") String name,
-                    @JsonProperty("Location") String location){
+                     @JsonProperty("Location") String location){
     this.name = name;
     this.location = location;
   }
 
   @Override
-  public String toString(){
-    return "{\"Name\":\"" + this.name + "\",\"Location\":\"" + this.location + "\" }";
+  public String toString() {
+    return "{" +
+              "\"Name\": \"" + this.name + "\"," +
+              "\"Location\": \"" + this.location + "\"" +
+            "}";
   }
 }

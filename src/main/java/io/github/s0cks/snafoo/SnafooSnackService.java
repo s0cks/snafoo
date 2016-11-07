@@ -1,8 +1,7 @@
 package io.github.s0cks.snafoo;
 
-import io.github.s0cks.snafoo.data.PurchasedSnack;
-import io.github.s0cks.snafoo.data.Snack;
-import io.github.s0cks.snafoo.data.Suggestion;
+import io.github.s0cks.snafoo.model.rest.Snack;
+import io.github.s0cks.snafoo.model.rest.Suggestion;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,6 +12,8 @@ import java.util.Collections;
 public enum SnafooSnackService{
   INSTANCE;
 
+  private static final String API = "https://api-snacks.nerderylabs.com/v1/snacks";
+
   private final RestTemplate template = new RestTemplate();
 
   private SnafooSnackService(){
@@ -20,13 +21,13 @@ public enum SnafooSnackService{
   }
 
   public Snack[] getSnacks(){
-    return this.template.getForObject("https://api-snacks.nerderylabs.com/v1/snacks", PurchasedSnack[].class);
+    return this.template.getForObject(API, Snack[].class);
   }
 
-  public Snack postSuggestion(Suggestion s){
+  public Snack addSuggestion(Suggestion s){
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     HttpEntity<String> entity = new HttpEntity<>(s.toString(), headers);
-    return this.template.postForObject("https://api-snacks.nerderylabs.com/v1/snacks", entity, PurchasedSnack.class);
+    return this.template.postForObject(API, entity, Snack.class);
   }
 }
