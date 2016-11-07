@@ -8,6 +8,14 @@ import org.springframework.http.client.support.HttpRequestWrapper;
 
 import java.io.IOException;
 
+/**
+ * SnafooAuthInterceptor
+ *
+ * Custom request interceptor to apply authentication data to all outgoing client requests.
+ * Again singleton (using enum) to cull useless instances.
+ *
+ * Singleton since we only need a single instance of this interceptor
+ */
 enum SnafooAuthInterceptor
 implements ClientHttpRequestInterceptor{
   INSTANCE;

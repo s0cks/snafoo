@@ -1,6 +1,5 @@
 package io.github.s0cks.snafoo.repo;
 
-import io.github.s0cks.snafoo.model.domain.User;
 import io.github.s0cks.snafoo.model.domain.Vote;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -13,11 +12,6 @@ public interface VoteRepository
 extends Repository<Vote, UUID> {
   public Vote save(Vote v);
 
-  public List<Vote> findByUser(User user);
-
   @Query("SELECT T FROM Vote AS T WHERE T.snack = :snack")
   public List<Vote> findBySnack(@Param("snack") String snack);
-
-  @Query("SELECT T FROM Vote AS T WHERE T.snack = :snack AND T.user = :user")
-  public Vote findBySnackAndUser(@Param("user") User user,  @Param("snack") String snack);
 }
