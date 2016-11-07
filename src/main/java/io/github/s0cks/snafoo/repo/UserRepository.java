@@ -7,6 +7,6 @@ import java.util.UUID;
 
 public interface UserRepository
 extends Repository<User, UUID>{
-  public User findById(UUID uuid);
   public User save(User user);
+  public User findById(String id);
 }

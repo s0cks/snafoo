@@ -15,9 +15,9 @@ extends Repository<Vote, UUID> {
 
   public List<Vote> findByUser(User user);
 
-  @Query("SELECT T FROM Vote AS T WHERE TRUNC(T.snack) = :snack")
+  @Query("SELECT T FROM Vote AS T WHERE T.snack = :snack")
   public List<Vote> findBySnack(@Param("snack") String snack);
 
-  @Query("SELECT T FROM Vote AS T WHERE TRUNC(T.snack) = :snack AND T.user = :user")
-  public Vote findBySnackAndUser(User user, String snack);
+  @Query("SELECT T FROM Vote AS T WHERE T.snack = :snack AND T.user = :user")
+  public Vote findBySnackAndUser(@Param("user") User user,  @Param("snack") String snack);
 }

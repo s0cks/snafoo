@@ -20,6 +20,14 @@ public class Vote{
   @Column(nullable = false)
   private String snack;
 
+  public Vote(){}
+
+  public Vote(User user, String snack){
+    this.id = UUID.randomUUID();
+    this.snack = snack;
+    this.user = user;
+  }
+
   public String getSnack() {
     return snack;
   }

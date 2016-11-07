@@ -8,7 +8,7 @@
         <script>
             var voteFor = function(name){
                 $.ajax({
-                    "url": "/snafoo/vote/" + name,
+                    "url": "/vote/" + name,
                     "type": "GET",
                     "success": function(data){
                         if(data.code == 200){
