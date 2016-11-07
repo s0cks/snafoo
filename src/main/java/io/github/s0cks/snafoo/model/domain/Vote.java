@@ -7,6 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.util.UUID;
 
+/**
+ * Another standard JPA entity this one has nothing really special about it
+ * No further comments
+ */
 @Entity
 public class Vote{
   @Id
