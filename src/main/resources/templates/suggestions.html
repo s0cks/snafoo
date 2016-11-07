@@ -8,7 +8,7 @@
         <script>
             var suggest = function(name, location){
                 $.ajax({
-                    "url": "/snafoo/suggest",
+                    "url": "/suggest",
                     "type": "POST",
                     "data": JSON.stringify({
                         "Name": name,
@@ -17,7 +17,7 @@
                     dataType: "json",
                     contentType: "application/json",
                     "success": function(data){
-                        window.location.replace("@{/snafoo/voting}");
+                        window.location.replace("@{/voting}");
                     }
                 });
             };
@@ -26,9 +26,9 @@
     <body>
         <nav class="navbar navbar-default">
             <ul class="nav navbar-nav">
-                <li><a th:href="@{/snafoo/voting}">Vote</a></li>
-                <li><a th:href="@{/snafoo/suggestions}">Suggestions</a></li>
-                <li><a href="#">Shopping List</a></li>
+                <li><a th:href="@{/voting}">Vote</a></li>
+                <li><a th:href="@{/suggestions}">Suggestions</a></li>
+                <li><a th:href="@{/shopping}">Shopping List</a></li>
             </ul>
         </nav>
 

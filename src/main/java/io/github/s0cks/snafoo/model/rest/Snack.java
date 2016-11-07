@@ -3,6 +3,8 @@ package io.github.s0cks.snafoo.model.rest;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Comparator;
+
 public class Snack {
   public final int id;
   public final int purchaseCount;
@@ -46,4 +48,7 @@ public class Snack {
       this.votes = votes;
     }
   }
+
+  public static final Comparator<Snack> SORT_BY_NAME = (t1, t2) -> t1.name.compareToIgnoreCase(t2.name);
+  public static final Comparator<VotedSnack> SORT_BY_VOTES = (t1, t2) -> Integer.compare(t1.votes, t2.votes);
 }

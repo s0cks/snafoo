@@ -13,6 +13,11 @@
                     "success": function(data){
                         if(data.code == 200){
                             location.reload(true);
+                        } else if(data.code == 500){
+                            var err = $('<div></div>');
+                            err.addClass("alert alert-danger");
+                            err.text(data.msg);
+                            $("#errors").after(err);
                         }
                     }
                 });
@@ -22,11 +27,14 @@
     <body>
         <nav class="navbar navbar-default">
             <ul class="nav navbar-nav">
-                <li><a th:href="@{/snafoo/voting}">Vote</a></li>
-                <li><a th:href="@{/snafoo/suggestions}">Suggestions</a></li>
-                <li><a href="#">Shopping List</a></li>
+                <li><a th:href="@{/voting}">Vote</a></li>
+                <li><a th:href="@{/suggestions}">Suggestions</a></li>
+                <li><a th:href="@{/shopping}">Shopping List</a></li>
             </ul>
         </nav>
+
+        <div id="errors"></div>
+
         <div class="row">
             <div class="col-sm-6">
                 <div class="panel panel-default">
@@ -38,7 +46,9 @@
             </div>
             <div class="col-sm-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Suggested</div>
+                    <div class="panel-heading">
+                        Suggested (<i th:text="${votesLeft}"></i>)
+                    </div>
                     <table class="table table-hover">
                         <thead>
                             <tr>
