@@ -9,3 +9,11 @@ You will need gradle to run Snafoo, after getting gradle installed and everythin
 ```
 gradle bootRun
 ```
+
+### Using
+
+After running the project just open your browser and go to:
+```
+http://localhost:<Port>
+
+```
