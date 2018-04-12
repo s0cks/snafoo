@@ -14,6 +14,6 @@ gradle bootRun
 
 After running the project just open your browser and go to:
 ```
-http://localhost:<Port>
+http://localhost:<Port or 8080>
 
 ```
