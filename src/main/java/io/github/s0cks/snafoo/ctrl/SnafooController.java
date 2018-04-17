@@ -21,12 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -39,7 +34,7 @@ public class SnafooController {
   @Autowired
   private UserService userService; // More dependency injection magic for the UserService
 
-  @ResponseBody // Need this so Spring will use the returned value of this function 
+  @ResponseBody // Need this so Spring will use the returned value of this function
   @RequestMapping( // Need this for mapping this function to the request route
   value = "/suggest", // This is for the endpoint's location
   method = RequestMethod.POST, // Declaring that it should accept POST only...
@@ -121,16 +116,25 @@ public class SnafooController {
                                                defaultValue = "") String userId, // Default to an empty string to calculate a new one
                                   HttpServletResponse resp, // This is needed for the cookie saving
                                   Model model) {
-    final User user; // Final cause it will be used in a lambda (which despite not being the same as an anonymous inner class semantically when compiled down to bytecode it still needs the final modifier for stack frame preservation
+    final User[] user = new User[1];// Final cause it will be used in a lambda (which despite not being the same as an anonymous inner class semantically when compiled down to bytecode it still needs the final modifier for stack frame preservation
+    Arrays.fill(user, null);
     if (userId.isEmpty()) { // Default to a new ID if its empty, this hsould be the default case when first visiting or after deleting the cookie
       UUID uuid = UUID.randomUUID(); // New UUID
       Cookie c = new Cookie("UserId", uuid.toString()); // New Cookie
       c.setMaxAge(365 * 24 * 60 * 60); // Set this to a year cause gradle takes a year to boot the application up
       resp.addCookie(c); // Here you add the cookie
-      user = new User(uuid); // Create a new User and save it here. Don't try to minimize this with user = this.userService.save(new User(uuid))); because it will return null for some reason
-      this.userService.save(user);
-    } else { 
-      user = this.userService.getUser(userId); // Since its a return visit and a valid cookie then it will just collect the User
+      user[0] = new User(uuid); // Create a new User and save it here. Don't try to minimize this with user = this.userService.save(new User(uuid))); because it will return null for some reason
+      this.userService.save(user[0]);
+    } else {
+      user[0] = this.userService.getUser(userId); // Since its a return visit and a valid cookie then it will just collect the User
+      if(user[0] == null){
+        UUID uuid = UUID.randomUUID();
+        Cookie c = new Cookie("UserId", uuid.toString());
+        c.setMaxAge(365 * 24 * 60 * 60);
+        resp.addCookie(c);
+        user[0] = new User(uuid);
+        this.userService.save(user[0]);
+      }
     }
 
     Set<Snack> snacks = SnafooSnackService.allSnacks();
@@ -142,10 +146,11 @@ public class SnafooController {
                                             .filter(SnackPredicates.OPTIONALLY_PURCHASED)
                                             .map((s) -> {
                                               List<Vote> votesFor = voteService.getVotesBy(s);
-                                              return new Snack.VotedSnack(s, votesFor.size(), user.hasVotedOn(s));
+                                              return new Snack.VotedSnack(s, votesFor.size(), user[0].hasVotedOn(s));
                                             })
+                                            .sorted(Snack.SORT_BY_VOTES)
                                             .collect(Collectors.toSet())); // Filter out the optional snacks and map them to a voted snack sub-type to help with client side rendering. See the template for relevant info
-    model.addAttribute("votesLeft", user.votesLeft()); // Give the client the remaining votes this User has
+    model.addAttribute("votesLeft", user[0].votesLeft()); // Give the client the remaining votes this User has
     return "voting";
   }
 }

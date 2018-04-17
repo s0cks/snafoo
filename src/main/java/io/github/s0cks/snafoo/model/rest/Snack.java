@@ -2,8 +2,13 @@ package io.github.s0cks.snafoo.model.rest;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.s0cks.snafoo.SnafooSnackService;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Basic Java representation of the Snack JSON Object.
@@ -57,6 +62,22 @@ public class Snack {
       super(owner);
       this.voted = voted;
       this.votes = votes;
+    }
+  }
+
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/DD/yyyy");
+  private static String getNowAsString(){
+    return DATE_FORMAT.format(new Date());
+  }
+
+  // This inner class is to mock a snack out of a suggestion since the webservice is unavailable
+  public static final class SuggestedSnack
+  extends Snack{
+    public final Suggestion suggestion;
+
+    public SuggestedSnack(int id, Suggestion suggestion){
+      super(id, suggestion.name, true, suggestion.location, 1, getNowAsString());
+      this.suggestion = suggestion;
     }
   }
 
